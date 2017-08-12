@@ -30,9 +30,11 @@ export default class AdminDashboard extends Component {
 
     // Find the text field via the React ref
     const albumName = this.albumInput.value.trim();
+    const artistName = this.artistInput.value.trim();
 
     Albums.insert({
       albumName,
+      artistName,
       sourceNodes: [],
       targetNodes: [],
       defaultAlbum: this.state.defaultCheckAlbum,
@@ -41,6 +43,7 @@ export default class AdminDashboard extends Component {
 
     // Clear form
     this.albumInput.value = '';
+    this.artistInput.value = '';
   }
   handleRelationshipSubmit(event) {
     event.preventDefault();
@@ -85,13 +88,17 @@ export default class AdminDashboard extends Component {
   render() {
     return (
       <div className="admin-temp-container" ref={(node) => { this.node = node; }}>
-        <h1>My awesome music guide</h1>
 
         <form className="new-album">
           <input
             type="text"
             ref={(node) => { this.albumInput = node; }}
             placeholder="Type to add album"
+          />
+          <input
+            type="text"
+            ref={(node) => { this.artistInput = node; }}
+            placeholder="Type to add artist"
           />
           <input
             type="checkbox"
