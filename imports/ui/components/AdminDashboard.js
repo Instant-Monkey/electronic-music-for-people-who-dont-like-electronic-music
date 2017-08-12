@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { Albums } from '../../api/albums.js';
+import Albums from '../../api/albums.js';
 
 export default class AdminDashboard extends Component {
   constructor(props) {
@@ -9,14 +9,21 @@ export default class AdminDashboard extends Component {
     this.handleAlbumSubmit = this.handleAlbumSubmit.bind(this);
     this.handleSelectChange = this.handleSelectChange.bind(this);
     this.handleRelationshipSubmit = this.handleRelationshipSubmit.bind(this);
+    this.toogleDefaultCheckAlbum = this.toogleDefaultCheckAlbum.bind(this);
     this.state = {
       album1Value: '',
       album2Value: '',
+      defaultCheckAlbum: false,
     };
   }
   componentWillReceiveProps(nextProps) {
     this.setState({ album1Value: nextProps.albums[0]._id });
     this.setState({ album2Value: nextProps.albums[0]._id });
+  }
+  toogleDefaultCheckAlbum() {
+    this.setState({
+      defaultCheckAlbum: !this.state.defaultCheckAlbum,
+    });
   }
   handleAlbumSubmit(event) {
     event.preventDefault();
@@ -28,6 +35,7 @@ export default class AdminDashboard extends Component {
       albumName,
       sourceNodes: [],
       targetNodes: [],
+      defaultAlbum: this.state.defaultCheckAlbum,
       createdAt: new Date(), // current time
     });
 
@@ -73,17 +81,26 @@ export default class AdminDashboard extends Component {
       <option key={album._id} value={album._id}>{album.albumName}</option>
     ));
   }
+
   render() {
     return (
       <div className="admin-temp-container" ref={(node) => { this.node = node; }}>
         <h1>My awesome music guide</h1>
 
-        <form className="new-album" onSubmit={this.handleAlbumSubmit} >
+        <form className="new-album">
           <input
             type="text"
             ref={(node) => { this.albumInput = node; }}
             placeholder="Type to add album"
           />
+          <input
+            type="checkbox"
+            readOnly
+            checked={this.state.defaultCheckAlbum}
+            onClick={this.toogleDefaultCheckAlbum}
+            ref={(node) => { this.defaultCheckAlbum = node; }}
+          />
+          <button onClick={this.handleAlbumSubmit}>Envoyer lalbum </button>
         </form>
         <br />
         <form >
