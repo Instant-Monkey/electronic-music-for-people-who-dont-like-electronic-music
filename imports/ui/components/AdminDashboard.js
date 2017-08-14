@@ -88,7 +88,7 @@ export default class AdminDashboard extends Component {
   render() {
     return (
       <div className="admin-temp-container" ref={(node) => { this.node = node; }}>
-
+        <h1> Admin Dashboard </h1>
         <form className="new-album">
           <input
             type="text"
