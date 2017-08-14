@@ -5,6 +5,12 @@ import { createContainer } from 'meteor/react-meteor-data';
 
 import Albums from '../../../api/albums.js';
 
+import ResultSearchAlbum from './ResultSearchAlbum.js';
+
+const ResultSearchAlbumsContainerStyle = {
+  marginTop: '10px',
+};
+
 class AdminDashboard extends Component {
   constructor(props) {
     super(props);
@@ -12,10 +18,14 @@ class AdminDashboard extends Component {
     this.handleSelectChange = this.handleSelectChange.bind(this);
     this.handleRelationshipSubmit = this.handleRelationshipSubmit.bind(this);
     this.toogleDefaultCheckAlbum = this.toogleDefaultCheckAlbum.bind(this);
+    this.searchForAlbums = this.searchForAlbums.bind(this);
+    this.renderResultSearchAlbums = this.renderResultSearchAlbums.bind(this);
+    this.handleSpotifyAlbumSumbit = this.handleSpotifyAlbumSumbit.bind(this);
     this.state = {
       album1Value: '',
       album2Value: '',
       defaultCheckAlbum: false,
+      searchAlbumResults: [],
     };
   }
   componentWillReceiveProps(nextProps) {
@@ -27,15 +37,36 @@ class AdminDashboard extends Component {
       defaultCheckAlbum: !this.state.defaultCheckAlbum,
     });
   }
+
+  createAlbumUrl(albumName, artistName) {
+    const albumUrl =
+    albumName.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s/g, '').toLowerCase() +
+    artistName.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s/g, '').toLowerCase();
+    return albumUrl;
+  }
+  handleSpotifyAlbumSumbit(album) {
+    const albumName = album.name;
+    const artistName = album.artists[0].name;
+    const albumSpotifyId = album.id;
+    const albumUrl = this.createAlbumUrl(albumName, artistName);
+    const albumToInsert = {
+      albumName,
+      artistName,
+      albumUrl,
+      albumSpotifyId,
+      SpotifyAlbumObject: album,
+      defaultAlbum: this.state.defaultCheckAlbum,
+    };
+
+    Meteor.call('albums.insert', albumToInsert);
+  }
   handleAlbumSubmit(event) {
     event.preventDefault();
 
     // Find the text field via the React ref
     const albumName = this.albumInput.value.trim();
     const artistName = this.artistInput.value.trim();
-    const albumUrl =
-    albumName.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s/g, '').toLowerCase() +
-    artistName.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s/g, '').toLowerCase();
+    const albumUrl = this.createAlbumUrl(albumName, artistName);
 
     const album = {
       albumName,
@@ -75,9 +106,16 @@ class AdminDashboard extends Component {
       this.setState({ album2Value: event.target.value });
     }
   }
-  showObject() {
-    Meteor.call('getAlbumWithId', '1ZwWGJGj9TtQPStBDcRY9c', (error, result) => {
-      console.log(result);
+  searchForAlbums() {
+    const albumSearched = this.albumSearchInput.value.trim();
+    Meteor.call('searchForAlbums', albumSearched, (error, result) => {
+      if (result.length === 0) {
+        console.log('pas de résultats');
+      } else {
+        this.setState({
+          searchAlbumResults: result,
+        });
+      }
     });
   }
   renderAlbumsOption() {
@@ -85,12 +123,25 @@ class AdminDashboard extends Component {
       <option key={album._id} value={album._id}>{album.albumName}</option>
     ));
   }
+  renderResultSearchAlbums() {
+    return this.state.searchAlbumResults.map(album => (
+      <ResultSearchAlbum key={album.id} album={album} onClick={this.handleSpotifyAlbumSumbit} />
+    ));
+  }
 
   render() {
     return (
       <div className="admin-temp-container" ref={(node) => { this.node = node; }}>
         <h1> Admin Dashboard </h1>
-        <button onClick={this.showObject}>show spotify object</button>
+        <input
+          type="text"
+          ref={(node) => { this.albumSearchInput = node; }}
+          placeholder="Search for an album "
+        />
+        <button onClick={this.searchForAlbums}>Rechercher</button>
+        <div className="search-result-container row" style={ResultSearchAlbumsContainerStyle}>
+          {this.renderResultSearchAlbums()}
+        </div>
         <form className="new-album">
           <input
             type="text"

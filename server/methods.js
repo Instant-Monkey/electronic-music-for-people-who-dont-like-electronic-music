@@ -16,4 +16,15 @@ Meteor.methods({
       });
     return future.wait();
   },
+  searchForAlbums: (query) => {
+    check(query, String);
+    const future = new Future();
+    spotifyApi.searchAlbums(query, { limit: 20, offset: 0 })
+      .then(function(data) {
+        future.return(data.body.albums.items);
+      }, function(err) {
+        console.error(err);
+      });
+    return future.wait();
+  },
 });
