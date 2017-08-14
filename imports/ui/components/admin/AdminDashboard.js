@@ -21,6 +21,8 @@ class AdminDashboard extends Component {
     this.searchForAlbums = this.searchForAlbums.bind(this);
     this.renderResultSearchAlbums = this.renderResultSearchAlbums.bind(this);
     this.handleSpotifyAlbumSumbit = this.handleSpotifyAlbumSumbit.bind(this);
+    this.renderClearSearchButton = this.renderClearSearchButton.bind(this);
+    this.clearSearchResults = this.clearSearchResults.bind(this);
     this.state = {
       album1Value: '',
       album2Value: '',
@@ -128,6 +130,17 @@ class AdminDashboard extends Component {
       <ResultSearchAlbum key={album.id} album={album} onClick={this.handleSpotifyAlbumSumbit} />
     ));
   }
+  clearSearchResults() {
+    return this.setState({
+      searchAlbumResults: [],
+    });
+  }
+  renderClearSearchButton() {
+    if (this.state.searchAlbumResults.length > 0) {
+      return <button onClick={this.clearSearchResults}>Clear Search Results</button>;
+    }
+    return null;
+  }
 
   render() {
     return (
@@ -139,6 +152,7 @@ class AdminDashboard extends Component {
           placeholder="Search for an album "
         />
         <button onClick={this.searchForAlbums}>Rechercher</button>
+        {this.renderClearSearchButton()}
         <div className="search-result-container row" style={ResultSearchAlbumsContainerStyle}>
           {this.renderResultSearchAlbums()}
         </div>
