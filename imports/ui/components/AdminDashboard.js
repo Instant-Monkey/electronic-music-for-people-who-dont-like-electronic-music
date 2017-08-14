@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
+import { createContainer } from 'meteor/react-meteor-data';
 
 import Albums from '../../api/albums.js';
 
-export default class AdminDashboard extends Component {
+class AdminDashboard extends Component {
   constructor(props) {
     super(props);
     this.handleAlbumSubmit = this.handleAlbumSubmit.bind(this);
@@ -31,15 +33,17 @@ export default class AdminDashboard extends Component {
     // Find the text field via the React ref
     const albumName = this.albumInput.value.trim();
     const artistName = this.artistInput.value.trim();
+    const albumUrl =
+    albumName.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s/g, '').toLowerCase() +
+    artistName.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s/g, '').toLowerCase();
 
-    Albums.insert({
+    const album = {
       albumName,
       artistName,
-      sourceNodes: [],
-      targetNodes: [],
+      albumUrl,
       defaultAlbum: this.state.defaultCheckAlbum,
-      createdAt: new Date(), // current time
-    });
+    };
+    Meteor.call('albums.insert', album);
 
     // Clear form
     this.albumInput.value = '';
@@ -51,26 +55,18 @@ export default class AdminDashboard extends Component {
     const targetAlbum = this.node.getElementsByClassName('album-2-select')[0].value;
     const weightInput = this.relationshipMessageInput.value.trim();
 
-    const sourceObj = {
-      albumId: sourceAlbum,
-      message: weightInput,
+    const relationship = {
+      source: {
+        albumId: sourceAlbum,
+        message: weightInput,
+      },
+      target: {
+        albumId: targetAlbum,
+        message: weightInput,
+      },
     };
 
-    const targetObj = {
-      albumId: targetAlbum,
-      message: weightInput,
-    };
-
-    // Update the sourceAlbum with targetNode
-    Albums.update(
-      { _id: sourceAlbum },
-      { $push: { targetNodes: targetObj } },
-    );
-
-    Albums.update(
-      { _id: targetAlbum },
-      { $push: { sourceNodes: sourceObj } },
-    );
+    Meteor.call('albums.updateRelationship', relationship);
   }
   handleSelectChange(event) {
     if (event.target.className === 'album-1-select') {
@@ -132,3 +128,10 @@ export default class AdminDashboard extends Component {
 AdminDashboard.propTypes = {
   albums: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
+
+export default createContainer(() => {
+  Meteor.subscribe('albums');
+  return {
+    albums: Albums.find({}).fetch(),
+  };
+}, AdminDashboard);

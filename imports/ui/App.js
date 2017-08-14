@@ -1,25 +1,16 @@
-import React, { Component } from 'react';
-import { createContainer } from 'meteor/react-meteor-data';
-import PropTypes from 'prop-types';
+import React from 'react';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import AdminDashboard from './components/AdminDashboard.js';
 import Main from './components/Main.js';
 
-import Albums from '../api/albums.js';
-
-const App = props => (
-  <div className="app-container">
-    <AdminDashboard albums={props.albums} />
-    <Main />
-  </div>
+const App = () => (
+  <Router>
+    <div className="app-container">
+      <Route exact path="/" component={Main} />
+      <Route path="/admin" component={AdminDashboard} />
+    </div>
+  </Router>
 );
 
-App.propTypes = {
-  albums: PropTypes.arrayOf(PropTypes.object).isRequired,
-};
-
-export default createContainer(() => (
-  {
-    albums: Albums.find({}).fetch(),
-  }
-), App);
+export default App;
