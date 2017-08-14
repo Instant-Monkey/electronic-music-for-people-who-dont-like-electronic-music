@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
 import { createContainer } from 'meteor/react-meteor-data';
 
-import Albums from '../../api/albums.js';
+import Albums from '../../../api/albums.js';
 
 class AdminDashboard extends Component {
   constructor(props) {
@@ -75,6 +75,11 @@ class AdminDashboard extends Component {
       this.setState({ album2Value: event.target.value });
     }
   }
+  showObject() {
+    Meteor.call('getAlbumWithId', '1ZwWGJGj9TtQPStBDcRY9c', (error, result) => {
+      console.log(result);
+    });
+  }
   renderAlbumsOption() {
     return this.props.albums.map(album => (
       <option key={album._id} value={album._id}>{album.albumName}</option>
@@ -85,6 +90,7 @@ class AdminDashboard extends Component {
     return (
       <div className="admin-temp-container" ref={(node) => { this.node = node; }}>
         <h1> Admin Dashboard </h1>
+        <button onClick={this.showObject}>show spotify object</button>
         <form className="new-album">
           <input
             type="text"
