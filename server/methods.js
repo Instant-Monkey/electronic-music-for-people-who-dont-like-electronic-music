@@ -27,4 +27,15 @@ Meteor.methods({
       });
     return future.wait();
   },
+  getArtistWithId: (id) => {
+    check(id, String);
+    const future = new Future();
+    spotifyApi.getArtist(id)
+      .then(function(data) {
+        future.return(data.body);
+      }, function(err) {
+        console.error(err);
+      });
+    return future.wait();
+  },
 });

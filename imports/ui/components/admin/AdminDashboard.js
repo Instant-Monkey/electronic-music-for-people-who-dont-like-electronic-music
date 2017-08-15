@@ -59,8 +59,15 @@ class AdminDashboard extends Component {
       SpotifyAlbumObject: album,
       defaultAlbum: this.state.defaultCheckAlbum,
     };
-
-    Meteor.call('albums.insert', albumToInsert);
+    Meteor.call('getArtistWithId', albumToInsert.SpotifyAlbumObject.artists[0].id, function(err, res) {
+      if (err) {
+        console.log(err);
+        return null;
+      }
+      albumToInsert.SpotifyArtistObject = res;
+      console.log(albumToInsert);
+      return Meteor.call('albums.insert', albumToInsert);
+    });
   }
   handleAlbumSubmit(event) {
     event.preventDefault();

@@ -13,19 +13,26 @@ class Main extends Component {
     super(props);
     this.handleDecision = this.handleDecision.bind(this);
     this.state = {
-      currentAlbum: {},
+      currentAlbum: {
+        defaultAlbum: true,
+      },
+      choiceHistory: [],
     };
   }
   componentWillReceiveProps() {
     const defaultAlbum = Albums.findOne({ defaultAlbum: true });
+    const joinedChoiceHistory = this.state.choiceHistory.concat(defaultAlbum);
     this.setState({
       currentAlbum: defaultAlbum,
+      choiceHistory: joinedChoiceHistory,
     });
   }
   updateCurrentAlbum(albumId) {
     const newCurrentAlbum = Albums.findOne({ _id: albumId });
+    const joinedChoiceHistory = this.state.choiceHistory.concat(newCurrentAlbum);
     this.setState({
       currentAlbum: newCurrentAlbum,
+      choiceHistory: joinedChoiceHistory,
     });
   }
   handleDecision(decision) {

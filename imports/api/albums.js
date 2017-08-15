@@ -19,6 +19,7 @@ Meteor.methods({
       albumUrl: newAlbum.albumUrl,
       albumSpotifyId: newAlbum.albumSpotifyId,
       SpotifyAlbumObject: newAlbum.SpotifyAlbumObject,
+      SpotifyArtistObject: newAlbum.SpotifyArtistObject,
       sourceNodes: [],
       targetNodes: [],
       defaultAlbum: newAlbum.defaultAlbum,
