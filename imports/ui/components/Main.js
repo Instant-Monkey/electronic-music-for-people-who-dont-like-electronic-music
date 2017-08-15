@@ -19,8 +19,8 @@ class Main extends Component {
       choiceHistory: [],
     };
   }
-  componentWillReceiveProps() {
-    const defaultAlbum = Albums.findOne({ defaultAlbum: true });
+  componentWillReceiveProps(nextProps) {
+    const defaultAlbum = nextProps.defaultAlbum;
     const joinedChoiceHistory = this.state.choiceHistory.concat(defaultAlbum);
     this.setState({
       currentAlbum: defaultAlbum,
@@ -58,12 +58,16 @@ class Main extends Component {
 }
 
 Main.propTypes = {
-  albums: PropTypes.arrayOf(PropTypes.object).isRequired,
+  defaultAlbum: PropTypes.object,
+};
+
+Main.defaultProps = {
+  defaultAlbum: {},
 };
 
 export default createContainer(() => {
   Meteor.subscribe('albums');
   return {
-    albums: Albums.find({}).fetch(),
+    defaultAlbum: Albums.findOne({ defaultAlbum: true }),
   };
 }, Main);
