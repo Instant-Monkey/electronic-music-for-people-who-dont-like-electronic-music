@@ -1,8 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 import Future from 'fibers/future';
+import wiki from 'wikijs';
 import spotifyApi from './main.js';
-
 
 Meteor.methods({
   getAlbumWithId: (id) => {
@@ -37,5 +37,16 @@ Meteor.methods({
         console.error(err);
       });
     return future.wait();
+  },
+  getWikiSummary: (pageId) => {
+    check(pageId, String);
+    const wikiFr = wiki();
+    const promisedResult = wikiFr.page(pageId)
+      .then(data => (
+        data.summary()
+      )).then(result => (
+        result
+      ));
+    return promisedResult;
   },
 });

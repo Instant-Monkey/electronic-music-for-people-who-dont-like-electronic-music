@@ -1,6 +1,5 @@
 import { Meteor } from 'meteor/meteor';
 import SpotifyWebApi from 'spotify-web-api-node';
-
 import '../imports/api/albums.js';
 
 Meteor.startup(() => {
