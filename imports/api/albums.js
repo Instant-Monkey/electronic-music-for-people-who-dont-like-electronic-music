@@ -14,12 +14,15 @@ Meteor.methods({
   'albums.insert'(newAlbum) {
     check(newAlbum, Object);
     Albums.insert({
-      albumName: newAlbum.albumName,
-      artistName: newAlbum.artistName,
-      albumUrl: newAlbum.albumUrl,
-      albumSpotifyId: newAlbum.albumSpotifyId,
-      SpotifyAlbumObject: newAlbum.SpotifyAlbumObject,
-      SpotifyArtistObject: newAlbum.SpotifyArtistObject,
+      albumInfo: {
+        albumName: newAlbum.albumInfo.albumName,
+        albumUrl: newAlbum.albumInfo.albumUrl,
+        SpotifyAlbumObject: newAlbum.albumInfo.SpotifyAlbumObject,
+      },
+      artistInfo: {
+        artistName: newAlbum.artistInfo.artistName,
+        SpotifyArtistObject: newAlbum.artistInfo.SpotifyArtistObject,
+      },
       sourceNodes: [],
       targetNodes: [],
       defaultAlbum: newAlbum.defaultAlbum,

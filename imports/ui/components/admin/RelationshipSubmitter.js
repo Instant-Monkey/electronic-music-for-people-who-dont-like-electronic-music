@@ -45,7 +45,7 @@ class RelationshipSubmitter extends Component {
   }
   renderAlbumsOption() {
     return this.props.albums.map(album => (
-      <option key={album._id} value={album._id}>{album.albumName}</option>
+      <option key={album._id} value={album._id}>{album.albumInfo.albumName}</option>
     ));
   }
   render() {

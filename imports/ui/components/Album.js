@@ -12,14 +12,14 @@ class Album extends Component {
     }
     return (
       <div className="single-album-container">
-        <h2>{"Essayez d'écouter"} : {this.props.album.albumName}
-          {' par'} {this.props.album.artistName}</h2>
+        <h2>{"Essayez d'écouter"} : {this.props.album.albumInfo.albumName}
+          {' par'} {this.props.album.artistInfo.artistName}</h2>
         <img
-          src={this.props.album.SpotifyAlbumObject.images[1].url}
+          src={this.props.album.albumInfo.SpotifyAlbumObject.images[1].url}
           alt={this.props.album.albumName}
         />
         <iframe
-          src={`https://embed.spotify.com/?uri=${this.props.album.SpotifyAlbumObject.uri}`}
+          src={`https://embed.spotify.com/?uri=${this.props.album.albumInfo.SpotifyAlbumObject.uri}`}
           title="spotify Iframe"
           width="300"
           height="380"

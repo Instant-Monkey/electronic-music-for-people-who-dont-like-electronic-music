@@ -23,23 +23,24 @@ class AlbumSearchContainer extends Component {
   handleSpotifyAlbumSumbit(album) {
     const albumName = album.name;
     const artistName = album.artists[0].name;
-    const albumSpotifyId = album.id;
     const albumUrl = this.props.createAlbumUrl(albumName, artistName);
-    const albumToInsert = {
-      albumName,
-      artistName,
-      albumUrl,
-      albumSpotifyId,
-      SpotifyAlbumObject: album,
-      defaultAlbum: this.state.defaultCheckAlbum,
-    };
-    Meteor.call('getArtistWithId', albumToInsert.SpotifyAlbumObject.artists[0].id, function(err, res) {
+    Meteor.call('getArtistWithId', album.artists[0].id, function(err, res) {
       if (err) {
         console.log(err);
         return null;
       }
-      albumToInsert.SpotifyArtistObject = res;
-      console.log(albumToInsert);
+      const albumToInsert = {
+        albumInfo: {
+          albumName,
+          albumUrl,
+          SpotifyAlbumObject: album,
+        },
+        artistInfo: {
+          artistName,
+          SpotifyArtistObject: res,
+        },
+        defaultAlbum: false,
+      };
       return Meteor.call('albums.insert', albumToInsert);
     });
   }
@@ -48,7 +49,8 @@ class AlbumSearchContainer extends Component {
       searchAlbumResults: [],
     });
   }
-  searchForAlbums() {
+  searchForAlbums(e) {
+    e.preventDefault();
     const albumSearched = this.albumSearchInput.value.trim();
     Meteor.call('searchForAlbums', albumSearched, (error, result) => {
       if (result.length === 0) {
@@ -74,12 +76,14 @@ class AlbumSearchContainer extends Component {
   render() {
     return (
       <div className="album-search-contaier">
-        <input
-          type="text"
-          ref={(node) => { this.albumSearchInput = node; }}
-          placeholder="Search for an album "
-        />
-        <button onClick={this.searchForAlbums}>Rechercher</button>
+        <form onSubmit={this.searchForAlbums}>
+          <input
+            type="text"
+            ref={(node) => { this.albumSearchInput = node; }}
+            placeholder="Search for an album "
+          />
+          <button>Rechercher</button>
+        </form>
         {this.renderClearSearchButton()}
         <div className="search-result-container row" style={ResultSearchAlbumsContainerStyle}>
           {this.renderResultSearchAlbums()}

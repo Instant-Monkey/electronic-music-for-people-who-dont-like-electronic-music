@@ -5,13 +5,13 @@ import { Meteor } from 'meteor/meteor';
 class ManuelAddingAlbum extends Component {
   constructor(props) {
     super(props);
-    this.handleAlbumSubmit = this.handleAlbumSubmit.bind(this);
+    this.handleManuelAlbumSubmit = this.handleManuelAlbumSubmit.bind(this);
     this.toogleDefaultCheckAlbum = this.toogleDefaultCheckAlbum.bind(this);
     this.state = {
       defaultCheckAlbum: false,
     };
   }
-  handleAlbumSubmit(event) {
+  handleManuelAlbumSubmit(event) {
     event.preventDefault();
 
     // Find the text field via the React ref
@@ -20,9 +20,15 @@ class ManuelAddingAlbum extends Component {
     const albumUrl = this.props.createAlbumUrl(albumName, artistName);
 
     const album = {
-      albumName,
-      artistName,
-      albumUrl,
+      albumInfo: {
+        albumName,
+        albumUrl,
+        SpotifyAlbumObject: {},
+      },
+      artistInfo: {
+        artistName,
+        SpotifyArtistObject: {},
+      },
       defaultAlbum: this.state.defaultCheckAlbum,
     };
     Meteor.call('albums.insert', album);
@@ -56,7 +62,7 @@ class ManuelAddingAlbum extends Component {
           onClick={this.toogleDefaultCheckAlbum}
           ref={(node) => { this.defaultCheckAlbum = node; }}
         />
-        <button onClick={this.handleAlbumSubmit}>Envoyer lalbum </button>
+        <button onClick={this.handleManuelAlbumSubmit}>Envoyer lalbum </button>
       </form>
     );
   }
