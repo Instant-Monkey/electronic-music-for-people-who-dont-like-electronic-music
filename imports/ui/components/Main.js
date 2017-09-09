@@ -6,17 +6,22 @@ import { createContainer } from 'meteor/react-meteor-data';
 import Album from './Album.js';
 import Decision from './Decision.js';
 
+import AutoComplete from 'material-ui/AutoComplete';
+
 import Albums from '../../api/albums.js';
 
 class Main extends Component {
   constructor(props) {
     super(props);
     this.handleDecision = this.handleDecision.bind(this);
+    this.searchForArtist = this.searchForArtist.bind(this);
     this.state = {
       currentAlbum: {
         defaultAlbum: true,
       },
       choiceHistory: [],
+      searchArtistValue: '',
+      searchResultsArtist: [],
     };
   }
   componentWillReceiveProps(nextProps) {
@@ -38,6 +43,25 @@ class Main extends Component {
   handleDecision(decision) {
     this.updateCurrentAlbum(decision.albumId);
   }
+  searchForArtist(value) {
+    //  const albumSearched = this.albumSearchInput.value.trim();
+    Meteor.call('searchForArtists', value, (error, result) => {
+      if (result.length === 0) {
+        console.log('pas de résultats');
+      } else {
+        this.setState({
+          searchResultsArtist: [],
+        });
+        result.map((artobj) => {
+          const tempState = this.state.searchResultsArtist;
+          tempState.push(artobj.name);
+          return this.setState({
+            searchResultsArtist: tempState,
+          });
+        });
+      }
+    });
+  }
   renderDecisions() {
     if (this.state.currentAlbum.targetNodes) {
       return this.state.currentAlbum.targetNodes.map(nodes => (
@@ -50,6 +74,11 @@ class Main extends Component {
     return (
       <div className="main-container">
         <h1> My awesome music guide </h1>
+        <AutoComplete
+          hintText="search for artists"
+          dataSource={this.state.searchResultsArtist}
+          onUpdateInput={this.searchForArtist}
+        />
         <Album album={this.state.currentAlbum} />
         {this.renderDecisions()}
       </div>

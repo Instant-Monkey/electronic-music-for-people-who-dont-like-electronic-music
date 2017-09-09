@@ -4,13 +4,15 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import AdminDashboard from './components/admin/AdminDashboard.js';
 import Main from './components/Main.js';
+import ArtistsList from './components/admin/artists/ArtistsList';
 
 const App = () => (
   <Router>
     <MuiThemeProvider>
       <div className="app-container">
         <Route exact path="/" component={Main} />
-        <Route path="/admin" component={AdminDashboard} />
+        <Route exact path="/admin" component={AdminDashboard} />
+        <Route path="/admin/artists" component={ArtistsList} />
       </div>
     </MuiThemeProvider>
   </Router>

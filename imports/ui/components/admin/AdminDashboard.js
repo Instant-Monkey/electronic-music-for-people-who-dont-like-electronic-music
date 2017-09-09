@@ -5,9 +5,10 @@ import { createContainer } from 'meteor/react-meteor-data';
 
 import Albums from '../../../api/albums.js';
 
-import ManuelAddingAlbum from './ManuelAddingAlbum.js';
-import AlbumSearchContainer from './AlbumSearchContainer.js';
-import RelationshipSubmitter from './RelationshipSubmitter.js';
+import AccountsUIWrapper from './AccountsUIWrapper.js';
+import ManuelAddingAlbum from './albums/ManuelAddingAlbum.js';
+import AlbumSearchContainer from './albums/AlbumSearchContainer.js';
+import RelationshipSubmitter from './relationships/RelationshipSubmitter.js';
 
 class AdminDashboard extends Component {
   constructor(props) {
@@ -29,6 +30,7 @@ class AdminDashboard extends Component {
     return (
       <div className="admin-temp-container">
         <h1> Admin Dashboard </h1>
+        <AccountsUIWrapper />
         <AlbumSearchContainer createAlbumUrl={this.createAlbumUrl} />
         <ManuelAddingAlbum createAlbumUrl={this.createAlbumUrl} />
         <br />
