@@ -9,16 +9,17 @@ export default class ArtistsList extends Component {
     this.renderArtists = this.renderArtists.bind(this);
   }
   renderArtists() {
-    return this.props.albums.map(album => (
-      <Artist key={album._id}artist={album.artistInfo} />
-    ));
+    return this.props.albums.map((album) => {
+      if (!album.defaultAlbum) {
+        return <Artist key={album._id} artist={album.artistInfo} />;
+      }
+      return false;
+    });
   }
   render() {
     return (
-      <div className="artist-list-container">
-        <ul>
-          {this.renderArtists()}
-        </ul>
+      <div className="artist-list-container row">
+        {this.renderArtists()}
       </div>
     );
   }

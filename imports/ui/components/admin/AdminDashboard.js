@@ -20,7 +20,7 @@ class AdminDashboard extends Component {
     this.showArtistsList = this.showArtistsList.bind(this);
     this.manageButtonArtistMessage = this.manageButtonArtistMessage.bind(this);
     this.state = {
-      listArtistDisplay: false,
+      listArtistDisplay: true,
       artistListMessage: 'Montrer les artistes',
     };
   }
@@ -59,7 +59,6 @@ class AdminDashboard extends Component {
   render() {
     return (
       <div className="admin-temp-container">
-        <Link to="admin/artists"> List of Artists</Link>
         <AlbumSearchContainer createAlbumUrl={this.createAlbumUrl} />
         <ManuelAddingAlbum createAlbumUrl={this.createAlbumUrl} />
         <br />
