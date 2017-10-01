@@ -16,7 +16,6 @@ Meteor.methods({
     const searchedAlbum = Albums.findOne({
       albumId: newAlbum.albumId,
     });
-    console.log(searchedAlbum);
     if (searchedAlbum === null) {
       Albums.insert({
         type: 'album',

@@ -54,7 +54,11 @@ class AdminDashboard extends Component {
     }
   }
   renderArtistsList() {
-    return this.state.listArtistDisplay ? <ArtistsList albums={this.props.albums} /> : null;
+    return this.state.listArtistDisplay ?
+      <ArtistsList
+        artists={this.props.artists}
+      />
+      : null;
   }
   render() {
     return (
@@ -71,11 +75,13 @@ class AdminDashboard extends Component {
 
 AdminDashboard.propTypes = {
   albums: PropTypes.arrayOf(PropTypes.object).isRequired,
+  artists: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default createContainer(() => {
   Meteor.subscribe('albums');
   return {
-    albums: Albums.find({}).fetch(),
+    albums: Albums.find({ type: 'album' }).fetch(),
+    artists: Albums.find({ type: 'artist' }).fetch(),
   };
 }, AdminDashboard);

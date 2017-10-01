@@ -7,13 +7,13 @@ import Avatar from 'material-ui/Avatar';
 const AlbumInArtist = props =>
   (
     <ListItem
-      primaryText="Brendan Lim"
+      primaryText={props.album.albumInfo.albumName}
       leftAvatar={<Avatar src="images/ok-128.jpg" />}
     />
   );
 
 AlbumInArtist.propTypes = {
-  artist: PropTypes.object.isRequired,
+  album: PropTypes.object.isRequired,
 };
 
 export default AlbumInArtist;

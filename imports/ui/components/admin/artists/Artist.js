@@ -11,13 +11,13 @@ const Artist = props =>
     <div className="artist-container col s12 m6 l3">
       <Card>
         <CardMedia
-          overlay={<CardTitle title={props.artist.artistName} />}
+          overlay={<CardTitle title={props.artist.artistInfo.artistName} />}
         >
-          <img src={props.artist.SpotifyArtistObject.images[2].url} alt="" />
+          <img src={props.artist.artistInfo.SpotifyArtistObject.images[2].url} alt="" />
         </CardMedia>
         <CardTitle title="Card title" subtitle="Card subtitle" />
         <CardText>
-          <AlbumListForArtist />
+          <AlbumListForArtist albums={props.albums} />
         </CardText>
         <CardActions>
           <FlatButton label="Action1" />
@@ -28,6 +28,7 @@ const Artist = props =>
   );
 
 Artist.propTypes = {
+  albums: PropTypes.arrayOf(PropTypes.string).isRequired,
   artist: PropTypes.object.isRequired,
 };
 
