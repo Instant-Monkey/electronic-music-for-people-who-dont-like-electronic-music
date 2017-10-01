@@ -24,6 +24,7 @@ class AlbumSearchContainer extends Component {
     const albumName = album.name;
     const artistName = album.artists[0].name;
     const albumUrl = this.props.createAlbumUrl(albumName, artistName);
+    this.clearSearchResults();
     Meteor.call('getArtistWithId', album.artists[0].id, function(err, res) {
       if (err) {
         console.log(err);

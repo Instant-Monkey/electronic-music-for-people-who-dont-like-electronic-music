@@ -9,9 +9,13 @@ export default class ArtistsList extends Component {
     this.renderArtists = this.renderArtists.bind(this);
   }
   renderArtists() {
+    const artistListId = {};
     return this.props.albums.map((album) => {
-      if (!album.defaultAlbum) {
-        return <Artist key={album._id} artist={album.artistInfo} />;
+      const artistId = album.artistInfo.SpotifyArtistObject.id;
+      const alreadyShown = artistId in artistListId;
+      if (!album.defaultAlbum && !alreadyShown) {
+        artistListId[artistId] = artistId;
+        return <Artist key={artistId} artist={album.artistInfo} />;
       }
       return false;
     });
