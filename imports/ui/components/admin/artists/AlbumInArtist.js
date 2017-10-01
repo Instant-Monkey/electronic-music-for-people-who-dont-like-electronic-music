@@ -8,7 +8,7 @@ const AlbumInArtist = props =>
   (
     <ListItem
       primaryText={props.album.albumInfo.albumName}
-      leftAvatar={<Avatar src="images/ok-128.jpg" />}
+      leftAvatar={<Avatar src={props.album.albumInfo.SpotifyAlbumObject.images[2].url} />}
     />
   );
 

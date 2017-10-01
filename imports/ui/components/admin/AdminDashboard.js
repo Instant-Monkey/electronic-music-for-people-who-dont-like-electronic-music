@@ -57,6 +57,7 @@ class AdminDashboard extends Component {
     return this.state.listArtistDisplay ?
       <ArtistsList
         artists={this.props.artists}
+        albums={this.props.albums}
       />
       : null;
   }

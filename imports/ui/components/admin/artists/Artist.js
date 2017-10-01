@@ -28,7 +28,7 @@ const Artist = props =>
   );
 
 Artist.propTypes = {
-  albums: PropTypes.arrayOf(PropTypes.string).isRequired,
+  albums: PropTypes.arrayOf(PropTypes.object).isRequired,
   artist: PropTypes.object.isRequired,
 };
 
