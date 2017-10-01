@@ -60,4 +60,12 @@ Meteor.methods({
       ));
     return promisedResult;
   },
+  checkAdminId: (id) => {
+    check(id, String);
+    const adminId = Meteor.settings.private.admin_id;
+    if (id === adminId) {
+      return true;
+    }
+    return false;
+  },
 });

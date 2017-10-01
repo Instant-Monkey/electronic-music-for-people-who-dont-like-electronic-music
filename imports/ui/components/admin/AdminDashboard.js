@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
 import { createContainer } from 'meteor/react-meteor-data';
+import { Link } from 'react-router-dom';
 
 import Albums from '../../../api/albums.js';
 
-import AccountsUIWrapper from './AccountsUIWrapper.js';
 import ManuelAddingAlbum from './albums/ManuelAddingAlbum.js';
 import AlbumSearchContainer from './albums/AlbumSearchContainer.js';
 import RelationshipSubmitter from './relationships/RelationshipSubmitter.js';
+
 
 class AdminDashboard extends Component {
   constructor(props) {
@@ -29,8 +30,7 @@ class AdminDashboard extends Component {
   render() {
     return (
       <div className="admin-temp-container">
-        <h1> Admin Dashboard </h1>
-        <AccountsUIWrapper />
+        <Link to="admin/artists"> List of Artists</Link>
         <AlbumSearchContainer createAlbumUrl={this.createAlbumUrl} />
         <ManuelAddingAlbum createAlbumUrl={this.createAlbumUrl} />
         <br />
