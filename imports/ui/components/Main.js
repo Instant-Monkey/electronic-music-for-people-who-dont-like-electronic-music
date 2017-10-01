@@ -19,6 +19,27 @@ class Main extends Component {
       currentAlbum: {
         defaultAlbum: true,
       },
+      /* {
+        "_id": "tqytbngr9XruKZGr6",
+        "albumInfo": {
+          "albumName": "choix initial",
+          "albumUrl": "choixinitialsylvain",
+          "SpotifyAlbumObject": {}
+        },
+        "artistInfo": {
+          "artistName": "sylvain",
+          "SpotifyArtistObject": {}
+        },
+        "sourceNodes": [],
+        "targetNodes": [
+          {
+            "albumId": "FCJbzdvdG5GRYPQ2A",
+            "message": "J'aime le rap !"
+          }
+        ],
+        "defaultAlbum": true,
+        "createdAt": "2017-08-16T19:48:29.865Z"
+      } */
       choiceHistory: [],
       searchArtistValue: '',
       searchResultsArtist: [],

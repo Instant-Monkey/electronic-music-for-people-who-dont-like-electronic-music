@@ -60,7 +60,6 @@ class AdminDashboard extends Component {
     return (
       <div className="admin-temp-container">
         <AlbumSearchContainer createAlbumUrl={this.createAlbumUrl} />
-        <ManuelAddingAlbum createAlbumUrl={this.createAlbumUrl} />
         <br />
         <RelationshipSubmitter albums={this.props.albums} />
         <button onClick={this.showArtistsList}>{this.state.artistListMessage}</button>

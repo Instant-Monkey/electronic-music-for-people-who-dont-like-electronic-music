@@ -11,23 +11,49 @@ if (Meteor.isServer) {
 }
 
 Meteor.methods({
-  'albums.insert'(newAlbum) {
+  'albums.insertAlbum'(newAlbum) {
     check(newAlbum, Object);
-    Albums.insert({
-      albumInfo: {
-        albumName: newAlbum.albumInfo.albumName,
-        albumUrl: newAlbum.albumInfo.albumUrl,
-        SpotifyAlbumObject: newAlbum.albumInfo.SpotifyAlbumObject,
-      },
-      artistInfo: {
-        artistName: newAlbum.artistInfo.artistName,
-        SpotifyArtistObject: newAlbum.artistInfo.SpotifyArtistObject,
-      },
-      sourceNodes: [],
-      targetNodes: [],
-      defaultAlbum: newAlbum.defaultAlbum,
-      createdAt: new Date(), // current time
+    const searchedAlbum = Albums.findOne({
+      albumId: newAlbum.albumId,
     });
+    console.log(searchedAlbum);
+    if (searchedAlbum === null) {
+      Albums.insert({
+        type: 'album',
+        albumInfo: {
+          albumName: newAlbum.albumInfo.albumName,
+          albumUrl: newAlbum.albumInfo.albumUrl,
+          SpotifyAlbumObject: newAlbum.albumInfo.SpotifyAlbumObject,
+        },
+        artistInfo: newAlbum.artistId,
+        sourceNodes: [],
+        targetNodes: [],
+        albumId: newAlbum.albumId,
+        createdAt: new Date(), // current time
+      });
+    }
+  },
+  'albums.insertArtist'(newArtist) {
+    check(newArtist, Object);
+    const searchedArtist = Albums.findOne({
+      artistId: newArtist.artistId,
+    });
+    if (searchedArtist) {
+      Albums.update(
+        { artistId: searchedArtist.artistId },
+        { $push: { albums: newArtist.album } });
+    } else {
+      Albums.insert({
+        type: 'artist',
+        artistInfo: {
+          artistName: newArtist.artistInfo.artistName,
+          SpotifyArtistObject: newArtist.artistInfo.SpotifyArtistObject,
+        },
+        albums: [newArtist.album],
+        artistId: newArtist.artistId,
+        createdAt: new Date(), // current time
+      });
+    }
   },
   'albums.updateRelationship'(relationship) {
     check(relationship, Object);

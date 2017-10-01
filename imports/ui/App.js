@@ -4,7 +4,6 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import AdminChecker from './components/admin/AdminChecker.js';
 import Main from './components/Main.js';
-import ArtistsList from './components/admin/artists/ArtistsList';
 
 const App = () => (
   <Router>
@@ -12,7 +11,6 @@ const App = () => (
       <div className="app-container">
         <Route exact path="/" component={Main} />
         <Route exact path="/admin" component={AdminChecker} />
-        <Route path="/admin/artists" component={ArtistsList} />
       </div>
     </MuiThemeProvider>
   </Router>

@@ -36,13 +36,20 @@ class AlbumSearchContainer extends Component {
           albumUrl,
           SpotifyAlbumObject: album,
         },
+        albumId: album.id,
+        artistId: res.id,
+      };
+      const artistToInsert = {
         artistInfo: {
           artistName,
           SpotifyArtistObject: res,
         },
-        defaultAlbum: false,
+        album: album.id,
+        artistId: res.id,
       };
-      return Meteor.call('albums.insert', albumToInsert);
+      Meteor.call('albums.insertArtist', artistToInsert);
+      Meteor.call('albums.insertAlbum', albumToInsert);
+      return true;
     });
   }
   clearSearchResults() {
