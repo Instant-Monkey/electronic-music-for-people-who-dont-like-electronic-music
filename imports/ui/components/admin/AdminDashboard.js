@@ -9,12 +9,20 @@ import Albums from '../../../api/albums.js';
 import ManuelAddingAlbum from './albums/ManuelAddingAlbum.js';
 import AlbumSearchContainer from './albums/AlbumSearchContainer.js';
 import RelationshipSubmitter from './relationships/RelationshipSubmitter.js';
+import ArtistsList from './artists/ArtistsList.js';
 
 
 class AdminDashboard extends Component {
   constructor(props) {
     super(props);
     this.searchForWikipediaSummary = this.searchForWikipediaSummary.bind(this);
+    this.renderArtistsList = this.renderArtistsList.bind(this);
+    this.showArtistsList = this.showArtistsList.bind(this);
+    this.manageButtonArtistMessage = this.manageButtonArtistMessage.bind(this);
+    this.state = {
+      listArtistDisplay: false,
+      artistListMessage: 'Montrer les artistes',
+    };
   }
   createAlbumUrl(albumName, artistName) {
     const albumUrl =
@@ -27,6 +35,27 @@ class AdminDashboard extends Component {
       console.log(result);
     });
   }
+  showArtistsList() {
+    const newArtistListState = !this.state.listArtistDisplay;
+    this.setState({
+      listArtistDisplay: newArtistListState,
+    });
+    this.manageButtonArtistMessage(newArtistListState);
+  }
+  manageButtonArtistMessage(show) {
+    if (show) {
+      this.setState({
+        artistListMessage: 'Cacher les artistes',
+      });
+    } else {
+      this.setState({
+        artistListMessage: 'Montrer les artistes',
+      });
+    }
+  }
+  renderArtistsList() {
+    return this.state.listArtistDisplay ? <ArtistsList albums={this.props.albums} /> : null;
+  }
   render() {
     return (
       <div className="admin-temp-container">
@@ -35,6 +64,8 @@ class AdminDashboard extends Component {
         <ManuelAddingAlbum createAlbumUrl={this.createAlbumUrl} />
         <br />
         <RelationshipSubmitter albums={this.props.albums} />
+        <button onClick={this.showArtistsList}>{this.state.artistListMessage}</button>
+        {this.renderArtistsList()}
       </div>
     );
   }
