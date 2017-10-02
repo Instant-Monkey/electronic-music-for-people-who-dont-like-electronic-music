@@ -18,38 +18,30 @@ class Main extends Component {
     this.state = {
       currentAlbum: {
         defaultAlbum: true,
-      },
-      /* {
-        "_id": "tqytbngr9XruKZGr6",
-        "albumInfo": {
-          "albumName": "choix initial",
-          "albumUrl": "choixinitialsylvain",
-          "SpotifyAlbumObject": {}
+        albumInfo: {
+          albumName: 'choix initial',
+          albumUrl: 'choixinitialsylvain',
+          SpotifyAlbumObject: {},
         },
-        "artistInfo": {
-          "artistName": "sylvain",
-          "SpotifyArtistObject": {}
+        artistInfo: {
+          SpotifyArtistObject: {},
         },
-        "sourceNodes": [],
-        "targetNodes": [
+        sourceNodes: [],
+        targetNodes: [
           {
-            "albumId": "FCJbzdvdG5GRYPQ2A",
-            "message": "J'aime le rap !"
-          }
+            albumId: 'dL9687jEkfdqMENjd',
+            message: 'J\'aime le trip-hop !',
+          },
         ],
-        "defaultAlbum": true,
-        "createdAt": "2017-08-16T19:48:29.865Z"
-      } */
+      },
       choiceHistory: [],
       searchArtistValue: '',
       searchResultsArtist: [],
     };
   }
-  componentWillReceiveProps(nextProps) {
-    const defaultAlbum = nextProps.defaultAlbum;
-    const joinedChoiceHistory = this.state.choiceHistory.concat(defaultAlbum);
+  componentWillMount() {
+    const joinedChoiceHistory = this.state.choiceHistory.concat(this.state.currentAlbum);
     this.setState({
-      currentAlbum: defaultAlbum,
       choiceHistory: joinedChoiceHistory,
     });
   }
@@ -107,17 +99,8 @@ class Main extends Component {
   }
 }
 
-Main.propTypes = {
-  defaultAlbum: PropTypes.object,
-};
-
-Main.defaultProps = {
-  defaultAlbum: {},
-};
-
 export default createContainer(() => {
   Meteor.subscribe('albums');
   return {
-    defaultAlbum: Albums.findOne({ defaultAlbum: true }),
   };
 }, Main);
