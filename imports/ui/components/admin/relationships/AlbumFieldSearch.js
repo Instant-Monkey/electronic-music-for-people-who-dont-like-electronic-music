@@ -14,12 +14,14 @@ export default class AlbumFieldSearch extends Component {
   }
   handleUpdateInput(value) {
     const newSearchResults = [];
+    const sanValue = value.toLowerCase();
     this.props.albums.map((album) => {
       const albumName = album.albumInfo.albumName;
-      if (albumName.includes(value)) {
+      if (albumName.toLowerCase().includes(sanValue)) {
         newSearchResults.push(albumName);
       }
     });
+    console.log(newSearchResults);
     this.setState({
       searchResults: newSearchResults,
     });
