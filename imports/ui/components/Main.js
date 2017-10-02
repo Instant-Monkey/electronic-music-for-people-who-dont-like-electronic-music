@@ -15,17 +15,10 @@ class Main extends Component {
     super(props);
     this.handleDecision = this.handleDecision.bind(this);
     this.searchForArtist = this.searchForArtist.bind(this);
+    this.handleUpdateInput = this.handleUpdateInput.bind(this);
     this.state = {
       currentAlbum: {
         defaultAlbum: true,
-        albumInfo: {
-          albumName: 'choix initial',
-          albumUrl: 'choixinitialsylvain',
-          SpotifyAlbumObject: {},
-        },
-        artistInfo: {
-          SpotifyArtistObject: {},
-        },
         sourceNodes: [],
         targetNodes: [
           {
@@ -57,7 +50,7 @@ class Main extends Component {
     this.updateCurrentAlbum(decision.albumId);
   }
   searchForArtist(value) {
-    //  const albumSearched = this.albumSearchInput.value.trim();
+    //const albumSearched = this.albumSearchInput.value.trim();
     Meteor.call('searchForArtists', value, (error, result) => {
       if (result.length === 0) {
         console.log('pas de résultats');
@@ -75,6 +68,9 @@ class Main extends Component {
       }
     });
   }
+  handleUpdateInput(value) {
+    this.searchForArtist(value);
+  }
   renderDecisions() {
     if (this.state.currentAlbum.targetNodes) {
       return this.state.currentAlbum.targetNodes.map(nodes => (
@@ -87,10 +83,11 @@ class Main extends Component {
     return (
       <div className="main-container">
         <h1> My awesome music guide </h1>
+        {console.log('rendered')}
         <AutoComplete
           hintText="search for artists"
           dataSource={this.state.searchResultsArtist}
-          onUpdateInput={this.searchForArtist}
+          onUpdateInput={this.handleUpdateInput}
         />
         <Album album={this.state.currentAlbum} />
         {this.renderDecisions()}
