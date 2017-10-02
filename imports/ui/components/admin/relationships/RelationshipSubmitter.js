@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 
+import AlbumFieldSearch from './AlbumFieldSearch.js';
+
 class RelationshipSubmitter extends Component {
   constructor(props) {
     super(props);
@@ -51,6 +53,7 @@ class RelationshipSubmitter extends Component {
   render() {
     return (
       <div className="relationship-submitter-container" ref={(node) => { this.node = node; }}>
+        <AlbumFieldSearch albums={this.props.albums} />
         <form >
           <select value={this.state.selectedAlbum1Value} className="album-1-select" onChange={this.handleSelectChange}>
             {this.renderAlbumsOption()}

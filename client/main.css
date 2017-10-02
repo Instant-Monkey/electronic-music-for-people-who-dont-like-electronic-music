@@ -3,6 +3,11 @@ p { 
   font-family: 'Roboto', sans-serif;
 }
 
+.admin-artist-image-container:first-child{
+  height:300px;
+  overflow-y:hidden;
+}
+
 .delete-task {
   display:none;
 }

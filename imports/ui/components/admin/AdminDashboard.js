@@ -20,7 +20,7 @@ class AdminDashboard extends Component {
     this.showArtistsList = this.showArtistsList.bind(this);
     this.manageButtonArtistMessage = this.manageButtonArtistMessage.bind(this);
     this.state = {
-      listArtistDisplay: true,
+      listArtistDisplay: false,
       artistListMessage: 'Montrer les artistes',
     };
   }
