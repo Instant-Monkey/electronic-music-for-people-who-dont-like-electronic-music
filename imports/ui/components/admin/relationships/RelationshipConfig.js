@@ -21,7 +21,7 @@ export default class RelationshipConfig extends Component {
     return (
       <div className="relationship-config-container col s12 m12 l6">
         <TextField
-          hintText="Hint Text"
+          hintText="Message de la relation"
           value={this.props.message}
           onChange={this.updateMessage}
         />

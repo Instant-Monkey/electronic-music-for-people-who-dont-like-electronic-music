@@ -24,7 +24,10 @@ class RelationshipSubmitter extends Component {
     const sourceAlbum = this.state.selectedAlbums[0]._id;
     const targetAlbum = this.state.selectedAlbums[1]._id;
     const weightInput = this.state.relationshipMessage;
-
+    if (sourceAlbum === undefined || targetAlbum === undefined || weightInput === '') {
+      console.log('t\'aurais pas oublié un truc ? ');
+      return false;
+    }
     const relationship = {
       source: {
         albumId: sourceAlbum,
@@ -38,7 +41,7 @@ class RelationshipSubmitter extends Component {
 
     Meteor.call('albums.updateRelationship', relationship);
     this.state.relationshipMessage = '';
-    this.setState({
+    return this.setState({
       relationshipMessage: '',
       selectedAlbums: [
         {},
