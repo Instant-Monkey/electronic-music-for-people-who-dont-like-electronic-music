@@ -23,6 +23,19 @@ p { 
   margin-top:10px;
 }
 
+.artist-container{
+  margin-top: 10px;
+}
+
+.album-search-form-container{
+  display:flex;
+}
+
+.album-search-form-container .clear-result-button {
+  margin-left:54px;
+  box-shadow: none !important;
+}
+
 relationship-submitter-container
 /*******************
   Utility Classes

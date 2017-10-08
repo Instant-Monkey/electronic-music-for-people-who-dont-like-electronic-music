@@ -3,11 +3,13 @@ import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
 
 import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
 
 import ResultSearchAlbum from './ResultSearchAlbum.js';
 
 const ResultSearchAlbumsContainerStyle = {
-  marginTop: '10px',
+  display: 'flex',
+  flexWrap: 'wrap',
 };
 
 class AlbumSearchContainer extends Component {
@@ -59,6 +61,7 @@ class AlbumSearchContainer extends Component {
   clearSearchResults() {
     return this.setState({
       searchAlbumResults: [],
+      albumFieldValue: '',
     });
   }
   searchForAlbums(e) {
@@ -81,7 +84,12 @@ class AlbumSearchContainer extends Component {
   }
   renderClearSearchButton() {
     if (this.state.searchAlbumResults.length > 0) {
-      return <button onClick={this.clearSearchResults}>Clear Search Results</button>;
+      return (<RaisedButton
+        onClick={this.clearSearchResults}
+        secondary
+        label="clear search results"
+        className="clear-result-button"
+      />);
     }
     return null;
   }
@@ -93,14 +101,16 @@ class AlbumSearchContainer extends Component {
   render() {
     return (
       <div className="album-search-contaier">
-        <form onSubmit={this.searchForAlbums}>
-          <TextField
-            value={this.state.albumFieldValue}
-            hintText="Search for an album "
-            onChange={this.updateAlbumFieldValue}
-          />
-        </form>
-        {this.renderClearSearchButton()}
+        <div className="album-search-form-container">
+          <form onSubmit={this.searchForAlbums}>
+            <TextField
+              value={this.state.albumFieldValue}
+              hintText="Search for an album "
+              onChange={this.updateAlbumFieldValue}
+            />
+          </form>
+          {this.renderClearSearchButton()}
+        </div>
         <div className="search-result-container row" style={ResultSearchAlbumsContainerStyle}>
           {this.renderResultSearchAlbums()}
         </div>

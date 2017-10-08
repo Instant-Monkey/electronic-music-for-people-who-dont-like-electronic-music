@@ -31,7 +31,7 @@ export default class ArtistsDashboard extends Component {
         <Divider />
         <TextField
           value={this.state.filterFieldValue}
-          hintText="filtrer les artistes"
+          hintText="filter artists"
           onChange={this.filterArtists}
         />
         <ArtistsList

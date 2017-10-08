@@ -3,6 +3,13 @@ import PropTypes from 'prop-types';
 
 import Artist from './Artist.js';
 
+const styles = {
+  root: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+};
+
 export default class ArtistsList extends Component {
   constructor(props) {
     super(props);
@@ -18,12 +25,16 @@ export default class ArtistsList extends Component {
   }
   renderArtists() {
     return this.props.artists.map(artist => (
-      <Artist key={artist._id} artist={artist} albums={this.getAlbumsForArtist(artist.albums)} />
+      <Artist
+        key={artist._id}
+        artist={artist}
+        albums={this.getAlbumsForArtist(artist.albums)}
+      />
     ));
   }
   render() {
     return (
-      <div className="artist-list-container row">
+      <div className="artist-list-container row" style={styles.root}>
         {this.renderArtists()}
       </div>
     );
