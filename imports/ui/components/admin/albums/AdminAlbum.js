@@ -6,7 +6,7 @@ import FlatButton from 'material-ui/FlatButton';
 
 const AdminAlbum = props =>
   (
-    <div className="album-container col s12 m6 l3">
+    <div className="album-container">
       <Card>
         <CardMedia
           overlay={<CardTitle title={props.album.albumInfo.albumName} />}

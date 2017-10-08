@@ -9,11 +9,15 @@ export default class AlbumFieldSearch extends Component {
     super(props);
     this.handleUpdateInput = this.handleUpdateInput.bind(this);
     this.reasearchAlbum = this.reasearchAlbum.bind(this);
-    this.handleACClick = this.handleACClick.bind(this);
     this.renderAlbumFound = this.renderAlbumFound.bind(this);
+    this.onNewRequest = this.onNewRequest.bind(this);
     this.state = {
       searchResults: [],
     };
+  }
+  onNewRequest(value) {
+    const id = this.props.id;
+    this.props.handleACClick(value, id);
   }
   reasearchAlbum(val) {
     return this.props.albums.filter((album) => {
@@ -33,33 +37,25 @@ export default class AlbumFieldSearch extends Component {
       searchResults: newSearchResults,
     });
   }
-  handleACClick(clicked) {
-    const albumFound = this.props.albums.find(album => album.albumId === clicked.value);
-    this.setState({
-      albumFound,
-    });
-  }
   renderAlbumFound() {
-    const albumFound = this.state.albumFound;
-    if (albumFound !== undefined) {
+    const albumFound = this.props.albumFound;
+    if (albumFound.albumId !== undefined) {
       return <AdminAlbum album={albumFound} />;
     }
     return null;
   }
   render() {
     return (
-      <div className="album-field-search-container">
+      <div className="album-field-search-container col s12 m6 l3 ">
         <AutoComplete
           hintText="search album"
           filter={AutoComplete.caseInsensitiveFilter}
           dataSource={this.state.searchResults}
           onUpdateInput={this.handleUpdateInput}
-          onNewRequest={this.handleACClick}
+          onNewRequest={this.onNewRequest}
           maxSearchResults={5}
         />
-        <div className="row">
-          {this.renderAlbumFound()}
-        </div>
+        {this.renderAlbumFound()}
       </div>
     );
   }
@@ -68,4 +64,7 @@ export default class AlbumFieldSearch extends Component {
 
 AlbumFieldSearch.propTypes = {
   albums: PropTypes.arrayOf(PropTypes.object).isRequired,
+  albumFound: PropTypes.object.isRequired,
+  handleACClick: PropTypes.func.isRequired,
+  id: PropTypes.number.isRequired,
 };

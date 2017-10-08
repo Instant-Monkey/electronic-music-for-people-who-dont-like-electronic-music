@@ -3,15 +3,21 @@ import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 
 import AlbumFieldSearch from './AlbumFieldSearch.js';
+import RelationshipConfig from './RelationshipConfig.js';
 
 class RelationshipSubmitter extends Component {
   constructor(props) {
     super(props);
     this.handleSelectChange = this.handleSelectChange.bind(this);
     this.handleRelationshipSubmit = this.handleRelationshipSubmit.bind(this);
+    this.handleACClick = this.handleACClick.bind(this);
     this.state = {
       selectedAlbum1Value: '',
       selectedAlbum2Value: '',
+      selectedAlbums: [
+        {},
+        {},
+      ],
     };
   }
   componentWillReceiveProps(nextProps) {
@@ -45,6 +51,14 @@ class RelationshipSubmitter extends Component {
       this.setState({ selectedAlbum2Value: event.target.value });
     }
   }
+  handleACClick(clicked, id) {
+    const albumFound = this.props.albums.find(album => album.albumId === clicked.value);
+    const newSelectedAlbums = this.state.selectedAlbums;
+    newSelectedAlbums[id] = albumFound;
+    this.setState({
+      selectedAlbums: newSelectedAlbums,
+    });
+  }
   renderAlbumsOption() {
     return this.props.albums.map(album => (
       <option key={album._id} value={album._id}>{album.albumInfo.albumName}</option>
@@ -52,9 +66,21 @@ class RelationshipSubmitter extends Component {
   }
   render() {
     return (
-      <div className="relationship-submitter-container" ref={(node) => { this.node = node; }}>
-        <AlbumFieldSearch albums={this.props.albums} />
-        <form >
+      <div className="relationship-submitter-container row" ref={(node) => { this.node = node; }}>
+        <AlbumFieldSearch
+          albums={this.props.albums}
+          handleACClick={this.handleACClick}
+          albumFound={this.state.selectedAlbums[0]}
+          id={0}
+        />
+        <AlbumFieldSearch
+          albums={this.props.albums}
+          handleACClick={this.handleACClick}
+          albumFound={this.state.selectedAlbums[1]}
+          id={1}
+        />
+        <RelationshipConfig />
+        { /* <form >
           <select value={this.state.selectedAlbum1Value} className="album-1-select" onChange={this.handleSelectChange}>
             {this.renderAlbumsOption()}
           </select>
@@ -67,7 +93,7 @@ class RelationshipSubmitter extends Component {
             placeholder="what weight?"
           />
           <button onClick={this.handleRelationshipSubmit}>Nouvelle Relation </button>
-        </form>
+        </form> */}
       </div>
     );
   }
