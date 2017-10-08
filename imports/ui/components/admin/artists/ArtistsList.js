@@ -10,16 +10,10 @@ export default class ArtistsList extends Component {
     this.getAlbumsForArtist = this.getAlbumsForArtist.bind(this);
   }
   getAlbumsForArtist(artistAlbums) {
-    const albumsForArtist = [];
-    this.props.albums.map((album) => {
-      for (let i = 0; i < artistAlbums.length; i += 1) {
-        if (artistAlbums[i] === album.albumId) {
-          albumsForArtist.push(album);
-        }
-      }
-      return album;
-    });
-    return albumsForArtist;
+    return this.props.albums.filter(album =>
+      artistAlbums.some(
+        artistAlbum => artistAlbum === album.albumId,
+      ));
   }
   renderArtists() {
     return this.props.artists.map(artist => (
