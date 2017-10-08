@@ -1,11 +1,17 @@
-import React, { Component } from 'react';
-import { Meteor } from 'meteor/meteor';
+import React from 'react';
 import PropTypes from 'prop-types';
 
+import Divider from 'material-ui/Divider';
+
 import AlbumSearchContainer from '../albums/AlbumSearchContainer.js';
+import DashboardTitle from '../smallComponents/DashboardTitle.js';
 
 const AlbumsDashboard = props => (
-  <AlbumSearchContainer createAlbumUrl={props.createAlbumUrl} />
+  <div className="album-dashboard-container">
+    <DashboardTitle primaryText="all the albums" />
+    <Divider />
+    <AlbumSearchContainer createAlbumUrl={props.createAlbumUrl} />
+  </div>
 );
 
 AlbumsDashboard.propTypes = {

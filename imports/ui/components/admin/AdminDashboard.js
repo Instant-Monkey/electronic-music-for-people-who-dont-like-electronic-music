@@ -58,6 +58,7 @@ class AdminDashboard extends Component {
           showMenuIconButton={false}
         />
         <div className="admin-dashboard-container row">
+          <div style={{ height: 20 }} />
           <Paper className="col s2"zDepth={1}>
             <List >
               <ListItem
@@ -74,9 +75,11 @@ class AdminDashboard extends Component {
               />
             </List>
           </Paper>
-          <Paper className="admin-dashboard-content col s9" zDepth={2} style={{ margin: 10 }} >
-            {this.renderActiveDashboard()}
-          </Paper>
+          <div className="admin-dashboard-content col s10" >
+            <Paper zDepth={2} style={{ padding: 10 }} >
+              {this.renderActiveDashboard()}
+            </Paper>
+          </div>
         </div>
       </div>
     );
