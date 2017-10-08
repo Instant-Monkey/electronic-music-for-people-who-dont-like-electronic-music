@@ -8,27 +8,22 @@ import RelationshipConfig from './RelationshipConfig.js';
 class RelationshipSubmitter extends Component {
   constructor(props) {
     super(props);
-    this.handleSelectChange = this.handleSelectChange.bind(this);
     this.handleRelationshipSubmit = this.handleRelationshipSubmit.bind(this);
     this.handleACClick = this.handleACClick.bind(this);
+    this.updateMessage = this.updateMessage.bind(this);
     this.state = {
-      selectedAlbum1Value: '',
-      selectedAlbum2Value: '',
+      relationshipMessage: '',
       selectedAlbums: [
         {},
         {},
       ],
     };
   }
-  componentWillReceiveProps(nextProps) {
-    this.setState({ selectedAlbum1Value: nextProps.albums[0]._id });
-    this.setState({ selectedAlbum2Value: nextProps.albums[0]._id });
-  }
   handleRelationshipSubmit(event) {
     event.preventDefault();
-    const sourceAlbum = this.node.getElementsByClassName('album-1-select')[0].value;
-    const targetAlbum = this.node.getElementsByClassName('album-2-select')[0].value;
-    const weightInput = this.relationshipMessageInput.value.trim();
+    const sourceAlbum = this.state.selectedAlbums[0]._id;
+    const targetAlbum = this.state.selectedAlbums[1]._id;
+    const weightInput = this.state.relationshipMessage;
 
     const relationship = {
       source: {
@@ -42,14 +37,14 @@ class RelationshipSubmitter extends Component {
     };
 
     Meteor.call('albums.updateRelationship', relationship);
-    this.relationshipMessageInput.value = '';
-  }
-  handleSelectChange(event) {
-    if (event.target.className === 'album-1-select') {
-      this.setState({ selectedAlbum1Value: event.target.value });
-    } else if (event.target.className === 'album-2-select') {
-      this.setState({ selectedAlbum2Value: event.target.value });
-    }
+    this.state.relationshipMessage = '';
+    this.setState({
+      relationshipMessage: '',
+      selectedAlbums: [
+        {},
+        {},
+      ],
+    });
   }
   handleACClick(clicked, id) {
     const albumFound = this.props.albums.find(album => album.albumId === clicked.value);
@@ -59,10 +54,10 @@ class RelationshipSubmitter extends Component {
       selectedAlbums: newSelectedAlbums,
     });
   }
-  renderAlbumsOption() {
-    return this.props.albums.map(album => (
-      <option key={album._id} value={album._id}>{album.albumInfo.albumName}</option>
-    ));
+  updateMessage(relationshipMessage) {
+    this.setState({
+      relationshipMessage,
+    });
   }
   render() {
     return (
@@ -79,21 +74,11 @@ class RelationshipSubmitter extends Component {
           albumFound={this.state.selectedAlbums[1]}
           id={1}
         />
-        <RelationshipConfig />
-        { /* <form >
-          <select value={this.state.selectedAlbum1Value} className="album-1-select" onChange={this.handleSelectChange}>
-            {this.renderAlbumsOption()}
-          </select>
-          <select value={this.state.selectedAlbum2Value} className="album-2-select" onChange={this.handleSelectChange}>
-            {this.renderAlbumsOption()}
-          </select>
-          <input
-            type="text"
-            ref={(node) => { this.relationshipMessageInput = node; }}
-            placeholder="what weight?"
-          />
-          <button onClick={this.handleRelationshipSubmit}>Nouvelle Relation </button>
-        </form> */}
+        <RelationshipConfig
+          message={this.state.relationshipMessage}
+          updateMessage={this.updateMessage}
+          handleRelationshipSubmit={this.handleRelationshipSubmit}
+        />
       </div>
     );
   }
