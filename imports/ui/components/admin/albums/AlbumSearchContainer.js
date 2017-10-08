@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
 
+import TextField from 'material-ui/TextField';
+
 import ResultSearchAlbum from './ResultSearchAlbum.js';
 
 const ResultSearchAlbumsContainerStyle = {
@@ -13,11 +15,13 @@ class AlbumSearchContainer extends Component {
     super(props);
     this.handleSpotifyAlbumSumbit = this.handleSpotifyAlbumSumbit.bind(this);
     this.clearSearchResults = this.clearSearchResults.bind(this);
+    this.updateAlbumFieldValue = this.updateAlbumFieldValue.bind(this);
     this.renderClearSearchButton = this.renderClearSearchButton.bind(this);
     this.renderResultSearchAlbums = this.renderResultSearchAlbums.bind(this);
     this.searchForAlbums = this.searchForAlbums.bind(this);
     this.state = {
       searchAlbumResults: [],
+      albumFieldValue: '',
     };
   }
   handleSpotifyAlbumSumbit(album) {
@@ -59,7 +63,7 @@ class AlbumSearchContainer extends Component {
   }
   searchForAlbums(e) {
     e.preventDefault();
-    const albumSearched = this.albumSearchInput.value.trim();
+    const albumSearched = this.state.albumFieldValue;
     Meteor.call('searchForAlbums', albumSearched, (error, result) => {
       if (result.length === 0) {
         console.log('pas de résultats');
@@ -68,6 +72,11 @@ class AlbumSearchContainer extends Component {
           searchAlbumResults: result,
         });
       }
+    });
+  }
+  updateAlbumFieldValue(e, value) {
+    this.setState({
+      albumFieldValue: value,
     });
   }
   renderClearSearchButton() {
@@ -85,12 +94,11 @@ class AlbumSearchContainer extends Component {
     return (
       <div className="album-search-contaier">
         <form onSubmit={this.searchForAlbums}>
-          <input
-            type="text"
-            ref={(node) => { this.albumSearchInput = node; }}
-            placeholder="Search for an album "
+          <TextField
+            value={this.state.albumFieldValue}
+            hintText="Search for an album "
+            onChange={this.updateAlbumFieldValue}
           />
-          <button>Rechercher</button>
         </form>
         {this.renderClearSearchButton()}
         <div className="search-result-container row" style={ResultSearchAlbumsContainerStyle}>

@@ -4,7 +4,7 @@ import { Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'ma
 import FlatButton from 'material-ui/FlatButton';
 
 const ResultSearchAlbumStyle = {
-  margin: '5%',
+  marginBottom: '10px',
 };
 
 class ResultSearchAlbum extends Component {
@@ -17,7 +17,7 @@ class ResultSearchAlbum extends Component {
   }
   render() {
     return (
-      <div className="result-search-album-container col s12 m6 l3 xl2">
+      <div className="result-search-album-container col s12 m6 l3">
         <Card style={ResultSearchAlbumStyle}>
           <CardMedia>
             <img src={this.props.album.images[1].url} alt={`cover of ${this.props.album.name}`} />

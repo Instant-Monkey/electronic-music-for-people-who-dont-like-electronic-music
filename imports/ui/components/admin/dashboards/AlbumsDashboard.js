@@ -8,7 +8,7 @@ import DashboardTitle from '../smallComponents/DashboardTitle.js';
 
 const AlbumsDashboard = props => (
   <div className="album-dashboard-container">
-    <DashboardTitle primaryText="all the albums" />
+    <DashboardTitle primaryText="add album from spotify" />
     <Divider />
     <AlbumSearchContainer createAlbumUrl={props.createAlbumUrl} />
   </div>

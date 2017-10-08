@@ -19,7 +19,7 @@ Meteor.methods({
   searchForAlbums: (query) => {
     check(query, String);
     const future = new Future();
-    spotifyApi.searchAlbums(query, { limit: 20, offset: 0 })
+    spotifyApi.searchAlbums(query, { limit: 8, offset: 0 })
       .then(function(data) {
         future.return(data.body.albums.items);
       }, function(err) {

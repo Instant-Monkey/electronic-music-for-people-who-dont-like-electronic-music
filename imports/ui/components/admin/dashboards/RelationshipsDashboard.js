@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 
+import Divider from 'material-ui/Divider';
+
+import DashboardTitle from '../smallComponents/DashboardTitle.js';
 import RelationshipConfig from '../relationships/RelationshipConfig.js';
 import AlbumFieldSearch from '../relationships/AlbumFieldSearch.js';
 
@@ -63,24 +66,28 @@ class RelationshipsDashboard extends Component {
   }
   render() {
     return (
-      <div className="relationship-submitter-container row" ref={(node) => { this.node = node; }}>
-        <AlbumFieldSearch
-          albums={this.props.albums}
-          handleACClick={this.handleACClick}
-          albumFound={this.state.selectedAlbums[0]}
-          id={0}
-        />
-        <AlbumFieldSearch
-          albums={this.props.albums}
-          handleACClick={this.handleACClick}
-          albumFound={this.state.selectedAlbums[1]}
-          id={1}
-        />
-        <RelationshipConfig
-          message={this.state.relationshipMessage}
-          updateMessage={this.updateMessage}
-          handleRelationshipSubmit={this.handleRelationshipSubmit}
-        />
+      <div className="relationship-dashboard-container">
+        <DashboardTitle primaryText="add relationship" />
+        <Divider />
+        <div className="relationship-submitter-container row" ref={(node) => { this.node = node; }}>
+          <AlbumFieldSearch
+            albums={this.props.albums}
+            handleACClick={this.handleACClick}
+            albumFound={this.state.selectedAlbums[0]}
+            id={0}
+          />
+          <AlbumFieldSearch
+            albums={this.props.albums}
+            handleACClick={this.handleACClick}
+            albumFound={this.state.selectedAlbums[1]}
+            id={1}
+          />
+          <RelationshipConfig
+            message={this.state.relationshipMessage}
+            updateMessage={this.updateMessage}
+            handleRelationshipSubmit={this.handleRelationshipSubmit}
+          />
+        </div>
       </div>
     );
   }
