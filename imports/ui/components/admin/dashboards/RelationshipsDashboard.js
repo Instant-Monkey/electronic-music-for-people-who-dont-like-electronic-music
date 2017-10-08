@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 
-import AlbumFieldSearch from './AlbumFieldSearch.js';
-import RelationshipConfig from './RelationshipConfig.js';
+import RelationshipConfig from '../relationships/RelationshipConfig.js';
+import AlbumFieldSearch from '../relationships/AlbumFieldSearch.js';
 
-class RelationshipSubmitter extends Component {
+class RelationshipsDashboard extends Component {
   constructor(props) {
     super(props);
     this.handleRelationshipSubmit = this.handleRelationshipSubmit.bind(this);
@@ -40,7 +40,6 @@ class RelationshipSubmitter extends Component {
     };
 
     Meteor.call('albums.updateRelationship', relationship);
-    this.state.relationshipMessage = '';
     return this.setState({
       relationshipMessage: '',
       selectedAlbums: [
@@ -87,8 +86,8 @@ class RelationshipSubmitter extends Component {
   }
 }
 
-RelationshipSubmitter.propTypes = {
+RelationshipsDashboard.propTypes = {
   albums: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
-export default RelationshipSubmitter;
+export default RelationshipsDashboard;

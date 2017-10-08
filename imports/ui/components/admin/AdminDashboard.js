@@ -2,26 +2,24 @@ import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
 import { createContainer } from 'meteor/react-meteor-data';
-import { Link } from 'react-router-dom';
+
+import AppBar from 'material-ui/AppBar';
+import { List, ListItem } from 'material-ui/List';
+import Paper from 'material-ui/Paper';
 
 import Albums from '../../../api/albums.js';
 
-import ManuelAddingAlbum from './albums/ManuelAddingAlbum.js';
-import AlbumSearchContainer from './albums/AlbumSearchContainer.js';
-import RelationshipSubmitter from './relationships/RelationshipSubmitter.js';
-import ArtistsList from './artists/ArtistsList.js';
-
+import RelationshipsDashboard from './dashboards/RelationshipsDashboard.js';
+import AlbumsDashboard from './dashboards/AlbumsDashboard.js';
+import ArtistsDashboard from './dashboards/ArtistsDashboard.js';
 
 class AdminDashboard extends Component {
   constructor(props) {
     super(props);
     this.searchForWikipediaSummary = this.searchForWikipediaSummary.bind(this);
-    this.renderArtistsList = this.renderArtistsList.bind(this);
-    this.showArtistsList = this.showArtistsList.bind(this);
-    this.manageButtonArtistMessage = this.manageButtonArtistMessage.bind(this);
+    this.renderActiveDashboard = this.renderActiveDashboard.bind(this);
     this.state = {
-      listArtistDisplay: false,
-      artistListMessage: 'Montrer les artistes',
+      activeDashboard: 'albums',
     };
   }
   createAlbumUrl(albumName, artistName) {
@@ -35,40 +33,51 @@ class AdminDashboard extends Component {
       console.log(result);
     });
   }
-  showArtistsList() {
-    const newArtistListState = !this.state.listArtistDisplay;
+  handleListItemClick(target) {
     this.setState({
-      listArtistDisplay: newArtistListState,
+      activeDashboard: target,
     });
-    this.manageButtonArtistMessage(newArtistListState);
   }
-  manageButtonArtistMessage(show) {
-    if (show) {
-      this.setState({
-        artistListMessage: 'Cacher les artistes',
-      });
-    } else {
-      this.setState({
-        artistListMessage: 'Montrer les artistes',
-      });
+  renderActiveDashboard() {
+    switch (this.state.activeDashboard) {
+      case 'albums':
+        return <AlbumsDashboard createAlbumUrl={this.createAlbumUrl} />;
+      case 'relationships':
+        return <RelationshipsDashboard albums={this.props.albums} />;
+      case 'artists':
+        return <ArtistsDashboard albums={this.props.albums} artists={this.props.artists} />;
+      default:
+        return <AlbumsDashboard createAlbumUrl={this.createAlbumUrl} />;
     }
-  }
-  renderArtistsList() {
-    return this.state.listArtistDisplay ?
-      <ArtistsList
-        artists={this.props.artists}
-        albums={this.props.albums}
-      />
-      : null;
   }
   render() {
     return (
-      <div className="admin-temp-container">
-        <AlbumSearchContainer createAlbumUrl={this.createAlbumUrl} />
-        <br />
-        <RelationshipSubmitter albums={this.props.albums} />
-        <button onClick={this.showArtistsList}>{this.state.artistListMessage}</button>
-        {this.renderArtistsList()}
+      <div className="admin-dashboard">
+        <AppBar
+          title={`Admin Dashboard : ${this.state.activeDashboard}`}
+          showMenuIconButton={false}
+        />
+        <div className="admin-dashboard-container row">
+          <Paper className="col s2"zDepth={1}>
+            <List >
+              <ListItem
+                primaryText="Albums"
+                onClick={() => this.handleListItemClick('albums')}
+              />
+              <ListItem
+                primaryText="Relationships"
+                onClick={() => this.handleListItemClick('relationships')}
+              />
+              <ListItem
+                primaryText="Artists"
+                onClick={() => this.handleListItemClick('artists')}
+              />
+            </List>
+          </Paper>
+          <Paper className="admin-dashboard-content col s9" zDepth={2} style={{ margin: 10 }} >
+            {this.renderActiveDashboard()}
+          </Paper>
+        </div>
       </div>
     );
   }

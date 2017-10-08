@@ -21,8 +21,7 @@ export default class AdminChecker extends Component {
   }
   render() {
     return (
-      <div className="admin-temp-container">
-        <h1> Admin Dashboard </h1>
+      <div className="admin-checker-container">
         {
           // <AccountsUIWrapper />
         }
