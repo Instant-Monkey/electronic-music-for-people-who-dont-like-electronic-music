@@ -4,21 +4,18 @@ import PropTypes from 'prop-types';
 import { Card, CardActions, CardMedia, CardTitle, CardText } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 
-import AlbumListForArtist from './AlbumListForArtist.js';
-
-const Artist = props =>
+const AdminAlbum = props =>
   (
-    <div className="artist-container col s12 m6 l3">
+    <div className="album-container col s12 m6 l3">
       <Card>
         <CardMedia
-          overlay={<CardTitle title={props.artist.artistInfo.artistName} />}
-          className="admin-artist-image-container"
+          overlay={<CardTitle title={props.album.albumInfo.albumName} />}
+          className="admin-album-image-container"
         >
-          <img src={props.artist.artistInfo.SpotifyArtistObject.images[0].url} alt="" className="admin-artist-image" />
+          <img src={props.album.albumInfo.SpotifyAlbumObject.images[0].url} alt="" className="admin-album-image" />
         </CardMedia>
         <CardTitle title="Card title" subtitle="Card subtitle" />
         <CardText>
-          <AlbumListForArtist albums={props.albums} />
         </CardText>
         <CardActions>
           <FlatButton label="Action1" />
@@ -28,9 +25,8 @@ const Artist = props =>
     </div>
   );
 
-Artist.propTypes = {
-  albums: PropTypes.arrayOf(PropTypes.object).isRequired,
-  artist: PropTypes.object.isRequired,
+AdminAlbum.propTypes = {
+  album: PropTypes.object.isRequired,
 };
 
-export default Artist;
+export default AdminAlbum;
