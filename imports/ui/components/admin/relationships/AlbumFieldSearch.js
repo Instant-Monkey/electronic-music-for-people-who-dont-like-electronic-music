@@ -8,19 +8,21 @@ export default class AlbumFieldSearch extends Component {
   constructor(props) {
     super(props);
     this.handleUpdateInput = this.handleUpdateInput.bind(this);
+    this.reasearchAlbum = this.reasearchAlbum.bind(this);
     this.state = {
       searchResults: [],
     };
   }
-  handleUpdateInput(value) {
-    const newSearchResults = [];
-    const sanValue = value.toLowerCase();
-    this.props.albums.map((album) => {
-      const albumName = album.albumInfo.albumName;
-      if (albumName.toLowerCase().includes(sanValue)) {
-        newSearchResults.push(albumName);
-      }
+  reasearchAlbum(val) {
+    return this.props.albums.filter((album) => {
+      const albumName = album.albumInfo.albumName.toLowerCase();
+      return albumName.includes(val);
     });
+  }
+  handleUpdateInput(value) {
+    const sanValue = value.toLowerCase();
+    const albumResults = this.reasearchAlbum(sanValue);
+    const newSearchResults = albumResults.map(album => album.albumInfo.albumName);
     console.log(newSearchResults);
     this.setState({
       searchResults: newSearchResults,
@@ -31,6 +33,7 @@ export default class AlbumFieldSearch extends Component {
       <div className="album-field-search-container">
         <AutoComplete
           hintText="search album"
+          filter={AutoComplete.caseInsensitiveFilter}
           dataSource={this.state.searchResults}
           onUpdateInput={this.handleUpdateInput}
         />

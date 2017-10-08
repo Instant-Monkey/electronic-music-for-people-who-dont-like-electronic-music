@@ -11,6 +11,7 @@ export default class ArtistsList extends Component {
   }
   getAlbumsForArtist(artistAlbums) {
     return this.props.albums.filter(album =>
+      // check all the id of the albums associetd with artist and return true if one is here
       artistAlbums.some(
         artistAlbum => artistAlbum === album.albumId,
       ));
